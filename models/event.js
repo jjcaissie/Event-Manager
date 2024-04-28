@@ -265,7 +265,7 @@ const eventSchema = new Schema({
             if (guestLimit === undefined) return false;
 
             if (user.accountType === ACCOUNT_TYPE.ADMIN || user.permissions.includes(PERMISSIONS.MODIFY_EVENTS) || this.creator === user._id) {
-                if (guestLimit === 0) {
+                if (guestLimit === 0 || guestLimit === '') {
                     // Remove guest limit
                     return await this.removeGuestLimit(user);
                 } else if (guestLimit < 0) {
@@ -332,7 +332,7 @@ const eventSchema = new Schema({
             if (inviterLimit === undefined) return false;
 
             if (user.accountType === ACCOUNT_TYPE.ADMIN || user.permissions.includes(PERMISSIONS.MODIFY_EVENTS) || this.creator === user._id) {
-                if (inviterLimit === 0) {
+                if (inviterLimit === 0 || inviterLimit === '') {
                     // Remove inviter limit
                     return await this.removeInviterLimit(user);
                 } else if (inviterLimit < 0) {
@@ -380,6 +380,20 @@ const eventSchema = new Schema({
             }
             return false;
         },
+        /**
+         * @returns An object containing fullName, username, and guestCount
+         * @author Alexander Beck
+         */
+        async getAllowedInviters() {
+            return Promise.all(this.allowedInviters.map(async (allowedInviter) => {
+                const inviter = await User.findOne({ _id: allowedInviter });
+                return {
+                    fullName: await inviter.fullName,
+                    username: inviter.username, 
+                    guestCount: (await this.getInviteIdsByInviter(inviter)).length
+                }
+            }));
+        }
     },
 });
 

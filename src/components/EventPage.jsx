@@ -1,38 +1,11 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import GuestListComponent from "./GuestListComponent.jsx";
-import UserGuestListComponent from "./UserGuestListComponent.jsx";
-import Navbar from "./Navbar.jsx";
 import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
 import EventTitle from "./EventTitle.jsx";
+import Navbar from "./Navbar.jsx";
+import UserGuestListComponent from "./UserGuestListComponent.jsx";
 
 function EventPage({ isAdmin, onLogout }) {
   const { eventId } = useParams();
-  // const [isAdmin, setIsAdmin] = useState(false);
-
-  const getGuestList = async () => {
-    try {
-      const response = await fetch("//localhost:3000/api/getGuestList", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: localStorage.getItem("token"),
-          eventId: eventId,
-        }),
-      });
-
-      const guests = await response.json();
-      setGuestList(guests);
-    } catch (error) {
-      console.error("Error getting guests: " + error);
-    }
-  };
-
-  useEffect(() => {
-    getGuestList();
-  }, [eventId]);
 
   return (
     <>
