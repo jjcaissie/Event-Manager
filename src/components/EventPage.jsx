@@ -84,17 +84,16 @@ function EventPage({ isAdmin, onLogout }) {
         showBackButton={true}
         showProfileButton={true}
       ></Navbar>
-      <div className="main-page-container">
+      <div className="min-w-screen mx-auto">
         <div>
           <EventTitle eventId={eventId} isAdmin={isAdmin} />
         </div>
-        <div className="relative grid grid-cols-2 justify-start mt-3 w-screen">
-          <div className="ml-1">
-            <GuestListComponent guestList={guestList} />
-          </div>
-          <div>
-            <UserGuestListComponent onUpdate={handleUpdate} manage={false} />
-          </div>
+        <div className="userguestlistwrapper">
+          <UserGuestListComponent
+            onUpdate={handleUpdate}
+            manage={false}
+            passedGuestList={guestList}
+          />
         </div>
       </div>
     </>
