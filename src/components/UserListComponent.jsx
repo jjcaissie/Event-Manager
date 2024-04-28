@@ -3,15 +3,18 @@ import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import GuestListComponent from "./GuestListComponent";
 
-function UserListComponent({ onUpdate }) {
+function UserListComponent() {
     const { eventId } = useParams();
     const [userList, setUserList] = useState([]);
     const guestNameRef = useRef(null);
     const [message, setMessage] = useState("");
+    const addInviterInput = useRef(null);
 
-    const getUserList = async (apiPoint) => {
+    //TODO: add pop up messages to each input field conirming a succesfull change
+
+    const getUserList = async () => {
         try {
-          const response = await fetch(apiPoint, {
+          const response = await fetch("//localhost:3000/api/getAllowedInviters", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -23,80 +26,59 @@ function UserListComponent({ onUpdate }) {
           });
     
           const users = await response.json();
-          console.log(users);
           setUserList(users);
         } catch (error) {
           console.error("Error getting users:", error);
         }
       };
 
-    const addGuest = async (guestName) => {
-        try {
-            const response = await fetch("//localhost:3000/api/inviteGuest", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    token: localStorage.getItem("token"),
-                    eventId: eventId,
-                    guestName: guestName,
-                }),
-            });
-            const result = await response.json();
-            if (result.success == true) {
-                setUserList((currentGuests) => [...currentGuests, { guestName }]);
-                onUpdate(guestName, "add");
-                setMessage("");
-            } else {
-                console.log(result);
-                setMessage("Error: " + result.error);
-            }
-            guestNameRef.current.value = "";
-        } catch (error) {
-            console.error("Error adding guest:", error);
-        }
-    };
-    const removeUser = async (userName) => {
-        try {
-            const response = await fetch("//localhost:3000/api/uninviteGuest", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    token: localStorage.getItem("token"),
-                    eventId: eventId,
-                    guestName: userName,
-                }),
-            });
-            const result = await response.json();
-            if (response.ok) {
-                setUserList((currentGuests) =>
-                    currentGuests.filter((guest) => guest.guestName !== userName)
-                );
-                onUpdate(userName, "remove");
-            }
-            console.log(result);
-        } catch (error) {
-            console.error("Error removing user:", error);
-        }
-    }
+    const handleRemove = async (username) => {
+      try {
+        const response = await fetch("//localhost:3000/api/removeAllowedInviter", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: localStorage.getItem("token"),
+            eventId: eventId,
+            inviterName: username,
+          }),
+        });
+        console.log(await response.json());
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const userName = guestNameRef.current.value;
-        addGuest(userName);
+      } catch (error) {
+        console.error("Error removing inviter:", error);
+      }
     };
-    const handleRemove = async (userName) => {
-        removeUser(userName);
+
+    const handleAdd = async () => {
+      try {
+        const response = await fetch("//localhost:3000/api/addAllowedInviter", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: localStorage.getItem("token"),
+            eventId: eventId,
+            inviterName: addInviterInput.current.value,
+          }),
+        });
+        console.log(await response.json());
+
+      } catch (error) {
+        console.error("Error adding inviter:", error);
+      }
+
+      addInviterInput.current.value = '';
     };
 
     useEffect(() => {
-        getUserList("//localhost:3000/api/getAllowedInviters");
+        getUserList();
     }, [eventId]);
 
-    const userTable = () => {
+    const guestTable = () => {
         return (
           <div className="flex justify-center align-center overflow-y-auto">
             <table className="table table-zebra bg-neutral not-prose table-md  w-full">
@@ -110,7 +92,7 @@ function UserListComponent({ onUpdate }) {
               <tbody>
                 {userList.map((user, index) => (
                   <tr key={index}>
-                    <td>{user.firstName + " " + user.lastName}</td>
+                    <td>{user.fullName}</td>
                     <td>{user.username}</td>
                     <td>{user.guestCount}</td>
                     <td>
@@ -118,7 +100,7 @@ function UserListComponent({ onUpdate }) {
                         className="btn bg-red-500 hover:bg-red-600 text-black font-bold "
                         type="button"
                         id={"removeButton" + index}
-                        onClick={() => handleRemove(user.userName)}
+                        onClick={() => handleRemove(user.username)}
                       >
                         Remove
                       </button>
@@ -131,16 +113,35 @@ function UserListComponent({ onUpdate }) {
         );
     };
 
-    let title = "User List";
     return (
         <div className="prose min-w-screen">
             <div className="flex flex-col px-2  w-screen">
-                <h1 className="w" style={{marginLeft: "1rem", marginBottom: "1rem", marginTop: "1rem"}}>{title}</h1>
+              <div className="flex overflow-y-auto">
+                <h1 className="w" style={{marginLeft: "1rem", marginBottom: "1rem", marginTop: "1rem"}}>Inviter List</h1>
+                <input
+                  className="validate input input-bordered w-full max-w-xs max-h-9 input-primary focus:outline-accent ml-2"
+                  type="text"
+                  id="addInviterInput"
+                  name="addInviterInput"
+                  placeholder="input username"
+                  style={{marginTop:"1.5rem", marginLeft:"1.5rem"}}
+                  ref={addInviterInput}
+                />
+                <button
+                  className="btn bg-green-500 hover:bg-green-600 text-black font-bold "
+                  type="button"
+                  id={"addButton"}
+                  style={{margin: "1rem"}}
+                  onClick={() => handleAdd()}
+                >
+                  Add Inviter
+                </button>
+              </div>
                 <div className="grid columns-3 grid-cols-3 gap-1">
                     {userList.length > 0 ? (
-                        userTable()
+                        guestTable()
                     ) : (
-                        <p className="text-slate text-center w-full">No guests invited</p>
+                        <p className="text-slate text-center w-full">No allowed inviters</p>
                     )}
                 </div>
             </div>
