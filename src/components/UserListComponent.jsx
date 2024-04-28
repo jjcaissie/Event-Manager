@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import GuestListComponent from "./GuestListComponent";
 
-function UserGuestListComponent({ onUpdate, manage }) {
+function UserListComponent({ onUpdate, manage }) {
     const { eventId } = useParams();
     const [guestList, setGuestList] = useState([]);
     const [userGuestList, setUserGuestList] = useState([]);
@@ -137,7 +137,7 @@ function UserGuestListComponent({ onUpdate, manage }) {
         );
     };
 
-    let title = "Guest List";
+    let title = "User List";
     return (
         <div className="prose min-w-screen">
             <div className="flex flex-col px-2  w-screen">
@@ -188,10 +188,10 @@ function UserGuestListComponent({ onUpdate, manage }) {
     );
 }
 
-UserGuestListComponent.propTypes = {
+UserListComponent.propTypes = {
     onUpdate: PropTypes.func,
     manage: PropTypes.bool,
     passedGuestList: PropTypes.arrayOf(PropTypes.any),
 };
 
-export default UserGuestListComponent;
+export default UserListComponent;

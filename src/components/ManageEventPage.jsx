@@ -63,7 +63,7 @@ function ManageEventPage({ onLogout }) {
       ]);
     else
       setGuestList((currentGuests) =>
-        currentGuests.filter((guest) => guest.guestName !== guestName)
+          currentGuests.filter((guest) => guest.guestName !== guestName)
       );
   };
 
@@ -80,76 +80,75 @@ function ManageEventPage({ onLogout }) {
   useEffect(() => {
     getGuestList();
     getProfile()
-      .then((profile) => {
-        setUserProfile(profile);
-      })
-      .catch((error) => {
-        console.error("Error getting profile:", error);
-      });
+        .then((profile) => {
+          setUserProfile(profile);
+        })
+        .catch((error) => {
+          console.error("Error getting profile:", error);
+        });
   }, [eventId]);
 
   return (
-    <>
-      <Navbar
-        onLogout={onLogout}
-        showBackButton={true}
-        showProfileButton={true}
-      />
+      <>
+        <Navbar
+            onLogout={onLogout}
+            showBackButton={true}
+            showProfileButton={true}
+        />
 
-      <div>
         <div>
-          <EventTitleManager eventId={eventId}/>
-        </div>
-        <div style={{display:"flex", flexDirection:"row"}}>
-          <UserGuestListComponent onUpdate={handleUpdate} manage={true} passedGuestList={guestList} />
-          <div className="flex flex-col ml-30 mt-10" style={{marginLeft: "40rem"}}>
-            <div className="flex flex-row ml-30 mt-4" >
-              <div className="flex flex-col ml-30 mt-4" >
-                <label className="text-lg text-slate-50 ml-3" htmlFor="totalLimitInput" >
-                  Total Guest Limit
-                </label>
-                <input
-                  className="validate input input-bordered w-full max-w-xs max-h-9 input-primary focus:outline-accent ml-2"
-                  type="number"
-                  id="totalLimitInput"
-                  name="totalLimitInput"
-                  ref={totalLimitUpdate}
-                />
-              </div>
-              <button 
-                type="button"
-                className="btn btn-square bg-green-400 text-black px-10 hover:bg-green-500"
-                style={{marginLeft:"1rem", marginTop:"2.4rem"}}
-                onClick={handleUpdateTotalLimit}
-              >Update</button>
-            </div>
-            <div className="flex flex-row ml-30 mt-4" >
-              <div className="flex flex-col ml-30 mt-4" >
-                <label className="text-lg text-slate-50 ml-3" htmlFor="userLimitInput" >
-                  User Guest Limit
-                </label>
-                <input
-                  className="validate input input-bordered w-full max-w-xs max-h-9 input-primary focus:outline-accent ml-2"
-                  type="number"
-                  id="userLimitInput"
-                  name="userLimitInput"
-                  ref={userLimitUpdate}
-                />
-              </div>
-              <button 
-                type="submit"
-                className="btn btn-square bg-green-400 text-black px-10 hover:bg-green-500"
-                style={{marginLeft:"1rem", marginTop:"2.4rem"}}
-                onClick={handleUpdateUserLimit}
-              >Update</button>
-            </div>
-          </div>
           <div>
+            <EventTitleManager eventId={eventId}/>
+          </div>
+          <div style={{display:"flex", flexDirection:"row"}}>
+            <UserGuestListComponent onUpdate={handleUpdate} manage={true} passedGuestList={guestList} />
             <UserListComponent onUpdate={handleUpdate} manage={true} passedGuestList={guestList}/>
+
+            <div className="flex flex-col ml-30 mt-10" style={{marginLeft: "40rem"}}>
+              <div className="flex flex-row ml-30 mt-4" >
+                <div className="flex flex-col ml-30 mt-4" >
+                  <label className="text-lg text-slate-50 ml-3" htmlFor="totalLimitInput" >
+                    Total Guest Limit
+                  </label>
+                  <input
+                      className="validate input input-bordered w-full max-w-xs max-h-9 input-primary focus:outline-accent ml-2"
+                      type="number"
+                      id="totalLimitInput"
+                      name="totalLimitInput"
+                      ref={totalLimitUpdate}
+                  />
+                </div>
+                <button
+                    type="button"
+                    className="btn btn-square bg-green-400 text-black px-10 hover:bg-green-500"
+                    style={{marginLeft:"1rem", marginTop:"2.4rem"}}
+                    onClick={handleUpdateTotalLimit}
+                >Update</button>
+              </div>
+              <div className="flex flex-row ml-30 mt-4" >
+                <div className="flex flex-col ml-30 mt-4" >
+                  <label className="text-lg text-slate-50 ml-3" htmlFor="userLimitInput" >
+                    User Guest Limit
+                  </label>
+                  <input
+                      className="validate input input-bordered w-full max-w-xs max-h-9 input-primary focus:outline-accent ml-2"
+                      type="number"
+                      id="userLimitInput"
+                      name="userLimitInput"
+                      ref={userLimitUpdate}
+                  />
+                </div>
+                <button
+                    type="submit"
+                    className="btn btn-square bg-green-400 text-black px-10 hover:bg-green-500"
+                    style={{marginLeft:"1rem", marginTop:"2.4rem"}}
+                    onClick={handleUpdateUserLimit}
+                >Update</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </>
+      </>
   );
 }
 

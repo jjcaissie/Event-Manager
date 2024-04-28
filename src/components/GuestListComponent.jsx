@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-function GuestListComponent({ guestList, shouldDisplayTitle }) {
+function GuestListComponent({ guestList, shouldDisplayTitle,  }) {
 
   return (
     <div className="overflow-x-auto prose">
@@ -27,7 +27,7 @@ function GuestListComponent({ guestList, shouldDisplayTitle }) {
 
 GuestListComponent.propTypes = {
   guestList: PropTypes.array.isRequired,
-  shouldDisplayTitle: PropTypes.bool
+  shouldDisplayTitle: PropTypes.bool,
 };
 
 export default GuestListComponent;
