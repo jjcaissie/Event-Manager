@@ -1,5 +1,5 @@
 ### Event List Site
-Note: Look at [proposal.md](proposal.md), not this README for the proposal submission.
+Note: Look at [proposal.md](proposal.md) for the project proposal submission
 
 # README
 __Project link__: https://cs4241-final-project-zzsv.onrender.com
