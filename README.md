@@ -7,7 +7,7 @@ __Project link__: https://cs4241-final-project-zzsv.onrender.com
 ## Project Description
 We created an Event Management web application. It is a platform designed to create an event, invite guests, and manage event and guest details. Users can register, invite guests, uninvite guests, and view the guest list for an event. Admins have an expanded set of abilities including being able to create events, manage guest lists, change event details, invite users to an event's list, and assign admin to users.
 
-The purpose of this project was to create a website for a local WPI community to more efficently organize events for their members. The idea is for the community leaders to be the admins and manage the events, while the community members sign up to be users. These users can write the name of guests they choose to bring, whether they are part of the community or not. The user's password are protected and remembered in the database, however the admins would be able to view the user's name. 
+The purpose of this project was to create a website for a local WPI community to more efficiently organize events for their members. The idea is for the community leaders to be the admins and manage the events, while the community members sign up to be users. These users can write the name of guests they choose to bring, whether they are part of the community or not. The user's password are protected and remembered in the database, however the admins would be able to view the user's name. 
 
 ## Instructions & Login Information
 Login:
